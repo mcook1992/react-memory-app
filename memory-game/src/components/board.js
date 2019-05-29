@@ -62,6 +62,8 @@ class Board extends Component {
     });
 
     // console.log(currentNodeClasses);
+
+    //may not need this stuff-test without it
     arrayOfCards.forEach(element => {
       console.log(element);
       if (element.id == currentNodeID) {
