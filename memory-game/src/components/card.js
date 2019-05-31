@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card({ number, hasBeenClicked, id, onClick }) {
+function Card({ number, hasBeenClicked, id, onClick, link }) {
   return (
     <li
       onClick={onClick}
@@ -8,7 +8,8 @@ function Card({ number, hasBeenClicked, id, onClick }) {
       data-value={hasBeenClicked}
       id={id}
     >
-      {number}
+      <img src={link} />
+      {/* {number} */}
     </li>
   );
 }

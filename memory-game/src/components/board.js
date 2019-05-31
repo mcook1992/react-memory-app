@@ -107,6 +107,7 @@ class Board extends Component {
               hasBeenClicked={card.hasBeenClicked}
               id={card.id}
               onClick={this.handleSquareClicked}
+              link={card.link}
             />
           ))}
           {/* <Card number={1} hasBeenClicked={false} /> */}
