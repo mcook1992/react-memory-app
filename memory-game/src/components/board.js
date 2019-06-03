@@ -5,10 +5,10 @@ import arrayOfCards from "../arrayFile";
 
 var repeatClick = false;
 
-var counter = 0;
 var gameLost = false;
 
 function shuffle(array) {
+  console.log("shuffling the array");
   var currentIndex = array.length,
     temporaryValue,
     randomIndex;
@@ -35,16 +35,22 @@ class Board extends Component {
   };
 
   handleSquareClicked = event => {
+    //preventing auto page reload
     event.preventDefault();
+
+    //grabbing the id of the image that's clicked
 
     var currentNodeID = event.target.id;
     console.log(currentNodeID);
+
+    //checking if the player has lost
 
     arrayOfCards.forEach(element => {
       if (element.id == currentNodeID) {
         if (element.hasBeenClicked == true) {
           alert("You lost");
           this.setState({ score: 0 }, function() {
+            //resetting the array after a loss
             arrayOfCards.forEach(element => {
               element.hasBeenClicked = false;
             });
@@ -52,77 +58,44 @@ class Board extends Component {
           });
           gameLost = true;
         } else {
+          //if that image hasn't already been clicked, now mark it as has been clicked
           element.hasBeenClicked = true;
         }
       }
     });
 
+    //if they haven't lost the game
+
     if (gameLost == false) {
+      console.log("entering the if gamelost false function");
       this.setState({ score: this.state.score + 1 }, function() {
+        //if they've clicked all twelve without losing, tell them they won!
+
         if (this.state.score > 11) {
           alert("You won");
           this.setState({ score: 0, wins: this.state.wins + 1 }, function() {
             arrayOfCards.forEach(element => {
               element.hasBeenClicked = false;
             });
-            shuffle(arrayOfCards);
+            // shuffle(arrayOfCards);
           });
         } else {
-          shuffle(arrayOfCards);
+          console.log("entering the else clause of the game lost function");
+          // shuffle(arrayOfCards);
         }
       });
     } else {
+      //if they have lost the game, skip all the steps above and just reset the deck
       gameLost = false;
       arrayOfCards.forEach(element => {
         element.hasBeenClicked = false;
       });
     }
 
+    shuffle(arrayOfCards);
+
     //go through and see if the player has lost
   };
-
-  // console.log(currentNodeClasses);
-
-  //if they haven't lost
-  // if (this.state.gameLost == false) {
-  //   console.log("this is the state when the button is false " + this.state);
-  //   //may not need this stuff-test without it
-  //   arrayOfCards.forEach(element => {
-  //     // console.log(element);
-  //     if (element.id == currentNodeID) {
-  //       element.hasBeenClicked = true;
-  //       // testArray.push(element);
-  //       // console.log("The test array is " + typeof testArray);
-  //       // this.state.vulnerableIDs.push(currentNodeID);
-  //       this.setState({
-  //         score: this.state.score + 1
-  //       });
-
-  //       this.setState({
-  //         vulnerableIDs: this.state.vulnerableIDs.concat(currentNodeID)
-  //       });
-
-  //       if (this.state.score > 11) {
-  //         alert("You won! Great job!");
-  //         this.setState({
-  //           vulnerableIDs: testArray,
-  //           score: 0,
-  //           wins: this.state.wins++
-  //         });
-
-  //         console.log("this is the state after a win " + this.state);
-  //         arrayOfCards.forEach(element => {
-  //           element.hasBeenClicked = false;
-  //         });
-  //         shuffle(arrayOfCards);
-  //       } else {
-  //         shuffle(arrayOfCards);
-
-  //         console.log("this is the state after a new turn " + this.state);
-  //       }
-  //     }
-  //   });
-  // }
 
   render() {
     return (
