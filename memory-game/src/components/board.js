@@ -4,6 +4,8 @@ import Header from "./header";
 import arrayOfCards from "../arrayFile";
 
 var repeatClick = false;
+var testArray = [];
+var counter = 0;
 
 function shuffle(array) {
   var currentIndex = array.length,
@@ -25,6 +27,18 @@ function shuffle(array) {
   return array;
 }
 
+// function youLose(array) {
+//   alert("You lose! Try again");
+//   this.setState({ vulnerableIDs: [], score: 0 });
+//   shuffle(array);
+// }
+
+// function youWin(array) {
+//   alert("You won! Great job!");
+//   this.setState({ vulnerableIDs: [], score: 0, wins: this.state.wins++ });
+//   shuffle(array);
+// }
+
 // function shuffleCards() {
 //   arrayOfCards.forEach(function(element) {
 //     element.cardNumber = Math.floor(Math.random() * arrayOfCards.length);
@@ -40,61 +54,125 @@ class Board extends Component {
   state = {
     score: 0,
     wins: 0,
-    vulnerableIDs: []
+    vulnerableIDs: [],
+    gameLost: false
   };
-
-  currentNumber = this.state.score;
 
   handleSquareClicked = event => {
     event.preventDefault();
+
+    // console.log("This is the beginning state " + this.state);
     // console.log("Button was clicked");
     // console.log(event.target.id);
 
     var currentNodeID = event.target.id;
     console.log(currentNodeID);
 
-    var currentNodeClasses = document.getElementById(currentNodeID).classList;
+    //go through and see if the player has lost
 
     this.state.vulnerableIDs.forEach(element => {
       if (currentNodeID == element) {
-        console.log("you lose");
+        alert("You lose! Try again");
+        this.setState(
+          { vulnerableIDs: testArray, score: 0, gameLost: true },
+          function() {
+            arrayOfCards.forEach(element => {
+              element.hasBeenClicked = false;
+            });
+            shuffle(arrayOfCards);
+            counter++;
+          }
+        );
+        //resetting all the values in the array
+      } else {
+        shuffle(arrayOfCards);
+        counter++;
       }
-    });
 
-    // console.log(currentNodeClasses);
+      if (counter == this.state.vulnerableIDs.length) {
+        if (this.state.gameLost == false) {
+          arrayOfCards.forEach(element => {
+            // console.log(element);
+            if (element.id == currentNodeID) {
+              element.hasBeenClicked = true;
+              this.setState({
+                vulnerableIDs: this.state.vulnerableIDs.concat(currentNodeID)
+              });
+              // testArray.push(element);
+              // console.log("The test array is " + typeof testArray);
+              // this.state.vulnerableIDs.push(currentNodeID);
+              this.setState(
+                {
+                  score: this.state.score + 1
+                },
+                function() {
+                  if (this.state.score > 11) {
+                    alert("You won! Great job!");
+                    this.setState({
+                      vulnerableIDs: testArray,
+                      score: 0,
+                      wins: this.state.wins++
+                    });
 
-    //may not need this stuff-test without it
-    arrayOfCards.forEach(element => {
-      console.log(element);
-      if (element.id == currentNodeID) {
-        if (element.hasBeenClicked == true) {
-          //   console.log(element);
-          //   console.log("You lose!");
-        } else {
-          element.hasBeenClicked = true;
-          this.state.vulnerableIDs.push(currentNodeID);
-          this.setState({
-            score: this.state.score + 1
+                    console.log("this is the state after a win " + this.state);
+                    arrayOfCards.forEach(element => {
+                      element.hasBeenClicked = false;
+                    });
+                    shuffle(arrayOfCards);
+                  } else {
+                    shuffle(arrayOfCards);
+                  }
+                }
+              );
+            }
           });
-          shuffle(arrayOfCards);
         }
       }
     });
-
-    //     currentNodeClasses.forEach(function(e) {
-    //       //   console.log(e);
-    //       e == "clicked" ? (repeatClick = true) : console.log("Nothing to do here");
-    //     });
-
-    //     if (repeatClick) {
-    //       console.log("You lost!");
-    //     } else {
-    //     }
   };
 
-  //   id => {
-  //     var clickedCard = document.getElementById(id);
-  //   };
+  // console.log(currentNodeClasses);
+
+  //if they haven't lost
+  // if (this.state.gameLost == false) {
+  //   console.log("this is the state when the button is false " + this.state);
+  //   //may not need this stuff-test without it
+  //   arrayOfCards.forEach(element => {
+  //     // console.log(element);
+  //     if (element.id == currentNodeID) {
+  //       element.hasBeenClicked = true;
+  //       // testArray.push(element);
+  //       // console.log("The test array is " + typeof testArray);
+  //       // this.state.vulnerableIDs.push(currentNodeID);
+  //       this.setState({
+  //         score: this.state.score + 1
+  //       });
+
+  //       this.setState({
+  //         vulnerableIDs: this.state.vulnerableIDs.concat(currentNodeID)
+  //       });
+
+  //       if (this.state.score > 11) {
+  //         alert("You won! Great job!");
+  //         this.setState({
+  //           vulnerableIDs: testArray,
+  //           score: 0,
+  //           wins: this.state.wins++
+  //         });
+
+  //         console.log("this is the state after a win " + this.state);
+  //         arrayOfCards.forEach(element => {
+  //           element.hasBeenClicked = false;
+  //         });
+  //         shuffle(arrayOfCards);
+  //       } else {
+  //         shuffle(arrayOfCards);
+
+  //         console.log("this is the state after a new turn " + this.state);
+  //       }
+  //     }
+  //   });
+  // }
 
   render() {
     return (

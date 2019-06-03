@@ -8,6 +8,19 @@
   pointer-events: none;
 }
 
+img {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  object-fit: contain;
+}
+
+li {
+  list-style-type: none;
+  display: inline-block;
+  margin: 10px;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

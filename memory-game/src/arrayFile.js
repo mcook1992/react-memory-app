@@ -69,7 +69,7 @@ const arrayOfCards = [
     id: 12,
     cardNumber: 12,
     hasBeenClicked: false,
-    link: require("./assets/Most-Interesting-Man.jpg")
+    link: require("./assets/grumpy-cat-meme-fun.jpg")
   }
 ];
 

@@ -6,9 +6,9 @@ function Card({ number, hasBeenClicked, id, onClick, link }) {
       onClick={onClick}
       className="memoryCard"
       data-value={hasBeenClicked}
-      id={id}
+      // id={id}
     >
-      <img src={link} />
+      <img src={link} id={id} />
       {/* {number} */}
     </li>
   );
